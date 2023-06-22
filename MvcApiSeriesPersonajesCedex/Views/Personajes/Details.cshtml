@@ -1,0 +1,17 @@
+﻿@model Personaje
+
+<h1>Details Personaje</h1>
+
+<form method="post" asp-action="UpdatePersonajeSerie">
+    <input type="hidden" name="idpersonaje" value="@Model.IdPersonaje"/>
+    <label>Id Serie</label>
+    <input type="text" name="idserie" class="form-control"/>
+    <div class="card" style="width: 18rem;">
+        <img src="@Model.Imagen" class="card-img-top" alt="...">
+        <div class="card-body">
+            <h5 class="card-title">@Model.Nombre</h5>
+            <p class="card-text">IdSerie: @Model.IdSerie</p>
+            <button class="btn btn-primary">Update personaje</button>
+        </div>
+    </div>
+</form>

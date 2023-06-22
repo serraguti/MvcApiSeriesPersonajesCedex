@@ -1,8 +1,10 @@
+using MvcApiSeriesPersonajesCedex.Helpers;
 using MvcApiSeriesPersonajesCedex.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.AddTransient<HelperPathProvider>();
 builder.Services.AddTransient<ServiceApiSeries>();
 builder.Services.AddControllersWithViews();
 

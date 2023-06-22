@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using MvcApiSeriesPersonajesCedex.Helpers;
 using MvcApiSeriesPersonajesCedex.Services;
 using NugetSeriesPersonajes;
 
@@ -7,9 +8,12 @@ namespace MvcApiSeriesPersonajesCedex.Controllers
     public class PersonajesController : Controller
     {
         private ServiceApiSeries service;
+        private HelperPathProvider helper;
 
-        public PersonajesController(ServiceApiSeries service)
+        public PersonajesController(ServiceApiSeries service
+            , HelperPathProvider helper)
         {
+            this.helper = helper;
             this.service = service;
         }
 
@@ -33,11 +37,18 @@ namespace MvcApiSeriesPersonajesCedex.Controllers
 
         [HttpPost]
         public async Task<IActionResult> CreatePersonaje
-            (Personaje personaje)
+            (Personaje personaje, IFormFile file)
         {
+            //MODIFICAMOS EL NOMBRE DE LA IMAGEN DEL PERSONAJE
+            personaje.Imagen = file.FileName;
+            string path = this.helper.MapPath(file.FileName, Folders.Images);
+            using (Stream stream = new FileStream(path, FileMode.Create))
+            {
+                await file.CopyToAsync(stream);
+            }
             await this.service.CreatePersonajesAsync(personaje);
             return RedirectToAction
-                ("PersonajesSerie", new { idserie = personaje.IdPersonaje });
+                ("PersonajesSerie", new { idserie = personaje.IdSerie });
         }
 
         public async Task<IActionResult> Details(int idpersonaje)

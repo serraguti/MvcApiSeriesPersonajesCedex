@@ -11,7 +11,7 @@
 @foreach (Personaje item in Model)
 {
     <div class="card" style="width: 18rem;">
-        <img src="@item.Imagen" class="card-img-top" alt="...">
+        <img src="~/images/@item.Imagen" class="card-img-top" alt="...">
         <div class="card-body">
             <h5 class="card-title">@item.Nombre</h5>
             <p class="card-text">IdSerie: @item.IdSerie</p>

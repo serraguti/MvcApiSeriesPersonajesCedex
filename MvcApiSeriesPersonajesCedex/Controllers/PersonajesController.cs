@@ -8,12 +8,13 @@ namespace MvcApiSeriesPersonajesCedex.Controllers
     public class PersonajesController : Controller
     {
         private ServiceApiSeries service;
-        private HelperPathProvider helper;
+        private ServiceAzureStorage serviceAzureStorage;
+        //private HelperPathProvider helper;
 
-        public PersonajesController(ServiceApiSeries service
-            , HelperPathProvider helper)
+        public PersonajesController
+            (ServiceApiSeries service, ServiceAzureStorage serviceAzureStorage)
         {
-            this.helper = helper;
+            this.serviceAzureStorage = serviceAzureStorage;
             this.service = service;
         }
 
@@ -41,10 +42,11 @@ namespace MvcApiSeriesPersonajesCedex.Controllers
         {
             //MODIFICAMOS EL NOMBRE DE LA IMAGEN DEL PERSONAJE
             personaje.Imagen = file.FileName;
-            string path = this.helper.MapPath(file.FileName, Folders.Images);
-            using (Stream stream = new FileStream(path, FileMode.Create))
+            //string path = this.helper.MapPath(file.FileName, Folders.Images);
+            using (Stream stream = file.OpenReadStream())
             {
-                await file.CopyToAsync(stream);
+                await this.serviceAzureStorage.UploadBlobAsync
+                    (file.FileName, stream);
             }
             await this.service.CreatePersonajesAsync(personaje);
             return RedirectToAction

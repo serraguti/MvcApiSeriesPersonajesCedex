@@ -2,6 +2,7 @@
 using NugetSeriesPersonajes;
 using System.Net.Http.Headers;
 using System.Text;
+using System.Web;
 
 namespace MvcApiSeriesPersonajesCedex.Services
 {
@@ -20,9 +21,16 @@ namespace MvcApiSeriesPersonajesCedex.Services
         {
             using (HttpClient client = new HttpClient())
             {
+                //var queryString = HttpUtility.ParseQueryString(string.Empty);
+                //request += "?" + queryString;
                 string url = this.UrlApi + request;
                 client.DefaultRequestHeaders.Clear();
                 client.DefaultRequestHeaders.Accept.Add(this.Header);
+                //client.DefaultRequestHeaders.CacheControl =
+                //    CacheControlHeaderValue.Parse("no-cache");
+                //DEBEMOS AÑADIR LA CLAVE DE SUBSCRIPCION
+                //string subscriptionKey = "3321c68de537414584558200196c4fa1";
+                //client.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", subscriptionKey);
                 HttpResponseMessage response =
                     await client.GetAsync(url);
                 if (response.IsSuccessStatusCode)

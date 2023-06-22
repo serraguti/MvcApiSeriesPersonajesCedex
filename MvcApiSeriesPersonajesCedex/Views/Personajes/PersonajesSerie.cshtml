@@ -1,5 +1,9 @@
 ﻿@model List<Personaje>
 
+@{
+    string urlimagenes = configuration.GetValue<string>("AzureStorage:UrlImagenes");
+}
+
 <h1 style="color:blue">Personajes Serie</h1>
 
 <p>
@@ -11,7 +15,7 @@
 @foreach (Personaje item in Model)
 {
     <div class="card" style="width: 18rem;">
-        <img src="~/images/@item.Imagen" class="card-img-top" alt="...">
+        <img src="@urlimagenes@item.Imagen" class="card-img-top" alt="...">
         <div class="card-body">
             <h5 class="card-title">@item.Nombre</h5>
             <p class="card-text">IdSerie: @item.IdSerie</p>

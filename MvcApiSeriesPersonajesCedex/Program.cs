@@ -1,10 +1,19 @@
+using Azure.Storage.Blobs;
 using MvcApiSeriesPersonajesCedex.Helpers;
 using MvcApiSeriesPersonajesCedex.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddTransient<HelperPathProvider>();
+//builder.Services.AddTransient<HelperPathProvider>();
+string azureStorageKeys =
+    builder.Configuration.GetValue<string>("AzureStorage:StorageAccount");
+BlobServiceClient blobServiceClient = new BlobServiceClient(azureStorageKeys);
+string containerName =
+    builder.Configuration.GetValue<string>("AzureStorage:ContainerName");
+BlobContainerClient containerClient = blobServiceClient.GetBlobContainerClient(containerName);
+builder.Services.AddTransient<BlobContainerClient>(x => containerClient);
+builder.Services.AddTransient<ServiceAzureStorage>();
 builder.Services.AddTransient<ServiceApiSeries>();
 builder.Services.AddControllersWithViews();
 

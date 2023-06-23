@@ -5,6 +5,7 @@ using MvcApiSeriesPersonajesCedex.Services;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.AddTransient<ServiceLogicApps>();
 //builder.Services.AddTransient<HelperPathProvider>();
 string azureStorageKeys =
     builder.Configuration.GetValue<string>("AzureStorage:StorageAccount");

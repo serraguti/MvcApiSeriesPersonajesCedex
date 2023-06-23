@@ -1,17 +1,32 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MvcApiSeriesPersonajesCedex.Models;
+using MvcApiSeriesPersonajesCedex.Services;
 using System.Diagnostics;
 
 namespace MvcApiSeriesPersonajesCedex.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+        private ServiceLogicApps service;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ServiceLogicApps service)
         {
-            _logger = logger;
+            this.service = service;
         }
+
+        public IActionResult SendMail()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> SendMail(EmailModel model)
+        {
+            await this.service.SendMailAsync(model);
+            ViewData["MENSAJE"] = "Su email ha sido enviado correctamente";
+            return View();
+        }
+        
 
         public IActionResult Index()
         {
